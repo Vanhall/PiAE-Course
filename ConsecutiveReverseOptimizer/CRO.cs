@@ -23,17 +23,6 @@ namespace ConsecutiveReverseOptimizer
             return (F.Transpose() * M.Inverse() * F)[0, 0];
         }
 
-        public IEnumerable<Point> GeneratePlan(int NumPoints)
-        {
-            var result = new List<Point>(NumPoints * NumPoints);
-            double step = 2.0 / (NumPoints - 1);
-
-            for (int i = 0; i < NumPoints; i++)
-                for (int j = 0; j < NumPoints; j++)
-                    result.Add(new Point(-1.0 + step * i, -1.0 + step * j));
-            return result;
-        }
-
         private Matrix<double> CalcM(IEnumerable<Point> Plan)
         {
             int N = Plan.Count();

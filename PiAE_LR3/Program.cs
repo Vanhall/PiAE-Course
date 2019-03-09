@@ -1,6 +1,7 @@
 ﻿using ConsecutiveReverseOptimizer;
 using MathNet.Numerics.LinearAlgebra;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -22,7 +23,18 @@ namespace PiAE_LR3
                 }
                 );
         }
-        
+
+        static IEnumerable<Point> GeneratePlan(int NumPoints)
+        {
+            var result = new List<Point>(NumPoints * NumPoints);
+            double step = 2.0 / (NumPoints - 1);
+
+            for (int i = 0; i < NumPoints; i++)
+                for (int j = 0; j < NumPoints; j++)
+                    result.Add(new Point(-1.0 + step * i, -1.0 + step * j));
+            return result;
+        }
+
         static void Main(string[] args)
         {
             int[] Ns = { 20, 25, 30, 35, 40 };
@@ -33,7 +45,7 @@ namespace PiAE_LR3
             {
                 Console.WriteLine($">>>----- Generating Plan for Grid size = {Grid} -----<<<");
                 var CRO = new CRO(f, 10);
-                Point[] Plan = CRO.GeneratePlan(Grid).ToArray();
+                Point[] Plan = GeneratePlan(Grid).ToArray();
                 foreach (var N in Ns)
                 {
                     string file = Directory.GetCurrentDirectory() + $"\\{Grid}x{Grid}_N{N}.txt";
